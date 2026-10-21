@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ko" data-theme="harbor" data-mode="light" data-density="full">
+<html lang="en" data-theme="harbor" data-mode="light" data-density="full">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>베트남 영업 레이더</title>
+<title>Vietnam Sales Radar</title>
 <link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Serif+KR:wght@400;600;700&family=Nanum+Gothic+Coding:wght@400;700&display=swap">
 <style>
@@ -353,7 +353,7 @@ const EN_NAMES = {"하노이":"Hanoi","하이퐁":"Hai Phong","박닌":"Bac Ninh
  "한국계":"Korean","중국계":"Chinese","일본계":"Japanese","대만계":"Taiwanese","싱가포르계":"Singaporean","미국계":"US","유럽계":"European",
  "전자·반도체":"Electronics","섬유·신발":"Textile & footwear","배터리·EV":"Battery & EV","자동차":"Automotive","화학·소재":"Chemicals",
  "철강·금속":"Steel & metals","식품·농수산":"Food & seafood","에너지":"Energy","물류·창고":"Logistics","산업단지":"Industrial park","가구·목재":"Furniture & wood"};
-const L = () => settings.lang === "en" ? "en" : "ko";
+const L = () => settings.lang === "ko" ? "ko" : "en";
 const T = k => I18N[L()][k] ?? I18N.ko[k];
 const nm = x => L() === "en" ? (EN_NAMES[x] || x) : x;
 const STATUS_LABEL = {"확인 필요":"stTodo","진행 중":"stDoing","완료":"stDone"};
@@ -375,7 +375,7 @@ function applyLang(){
 
 /* ───── 설정 ───── */
 const hasApi = () => !!(window.pywebview && window.pywebview.api);
-const DEFAULT_SETTINGS = {theme:"harbor", mode:"auto", fs:14, density:"full", lang:"ko"};
+const DEFAULT_SETTINGS = {theme:"harbor", mode:"auto", fs:14, density:"full", lang:"en"};
 let settings = {...DEFAULT_SETTINGS, ...((DATA && DATA.settings) || {})};
 try { Object.assign(settings, JSON.parse(localStorage.getItem("radar-settings") || "{}")); } catch(e) {}
 const mq = window.matchMedia("(prefers-color-scheme: dark)");
@@ -541,6 +541,17 @@ function render(){
   const shown = list.slice(0, state.limit), rest = list.length - shown.length;
   el.innerHTML = shown.map(it => card(it, null)).join("") +
     (rest > 0 ? `<button type="button" class="more" id="more">${L() === "en" ? `Show more (${rest} left)` : `더 보기 (${rest}건 남음)`}</button>` : "");
+  watchMore();
+}
+/* 목록 끝에 가까워지면 다음 60건 자동으로 불러오기 */
+let moreObserver = null;
+function loadMore(){ state.limit += PAGE; const y = window.scrollY; render(); window.scrollTo(0, y); }
+function watchMore(){
+  if (!("IntersectionObserver" in window)) return;
+  if (moreObserver) moreObserver.disconnect();
+  const m = document.getElementById("more"); if (!m) return;
+  moreObserver = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) { moreObserver.disconnect(); requestAnimationFrame(loadMore); } }, {rootMargin: "800px 0px"});
+  moreObserver.observe(m);
 }
 function bindSeg(id, key, parse){
   document.getElementById(id).addEventListener("click", e => {
@@ -559,7 +570,7 @@ document.getElementById("q").addEventListener("input", e => { clearTimeout(qTime
 document.getElementById("sort").addEventListener("change", e => { state.sort = e.target.value; state.limit = PAGE; render(); });
 const listEl = document.getElementById("list");
 listEl.addEventListener("click", e => {
-  if (e.target.id === "more") { state.limit += PAGE; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  if (e.target.id === "more") { loadMore(); return; }
   const chk = e.target.closest(".check"); if (chk) { toggleCheck(chk.dataset.id); return; }
   const tog = e.target.closest(".toggle");
   if (tog) { const o = tog.closest(".item").querySelector(".orig"); o.hidden = !o.hidden; tog.textContent = o.hidden ? T("orig") : T("origClose"); return; }
