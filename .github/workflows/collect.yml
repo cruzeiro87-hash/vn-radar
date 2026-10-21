@@ -6,7 +6,7 @@ on:
   workflow_dispatch:           # Actions 탭에서 수동 실행 버튼
 
 permissions:
-  contents: read
+  contents: write     # 매주 기록 파일 커밋 (60일 자동 정지 방지)
   pages: write
   id-token: write
 
@@ -44,6 +44,19 @@ jobs:
         env:
           MYMEMORY_EMAIL: ${{ secrets.MYMEMORY_EMAIL }}
         run: python news_widget.py --collect --web
+
+      - name: 매주 월요일 기록 남기기 (GitHub 60일 자동 정지 방지)
+        if: github.event_name == 'workflow_dispatch' || github.event.schedule != ''
+        run: |
+          if { [ "$(date -u +%u)" = "1" ] && [ "$(date -u +%-H)" -lt 3 ]; } || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            mkdir -p keepalive
+            date -u +%Y-%m-%dT%H:%MZ > keepalive/last-run.txt
+            git config user.name "radar-bot"
+            git config user.email "radar-bot@users.noreply.github.com"
+            git add keepalive/last-run.txt
+            git diff --cached --quiet || git commit -m "keepalive $(date -u +%Y-%m-%d)"
+            git push || echo "기록 커밋 실패 (수집에는 영향 없음)"
+          fi
 
       - uses: actions/upload-pages-artifact@v3
         with:
