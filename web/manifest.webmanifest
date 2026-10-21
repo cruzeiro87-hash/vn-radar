@@ -1,0 +1,16 @@
+{
+  "name": "베트남 영업 레이더",
+  "short_name": "영업 레이더",
+  "description": "베트남 투자·관세·수출입·물류 뉴스를 물류영업 관점으로 매시간 모아 보는 앱",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#E9EEF1",
+  "theme_color": "#15263A",
+  "lang": "ko",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}

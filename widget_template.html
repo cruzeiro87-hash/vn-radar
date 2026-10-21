@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="ko" data-theme="harbor" data-mode="light" data-density="full">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>베트남 영업 레이더</title>
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Serif+KR:wght@400;600;700&family=Nanum+Gothic+Coding:wght@400;700&display=swap">
+<style>
+/* ───── 공통 토큰 (기본 = 하버) ───── */
+:root{
+  --font:"Pretendard Variable",Pretendard,"Malgun Gothic","Apple SD Gothic Neo",sans-serif;
+  --bg:#E9EEF1; --bg-img:none; --surface:#FFFFFF; --ink:#15263A; --muted:#5B6B7B; --line:#CBD5DD; --soft:#F3F6F8;
+  --head-bg:var(--bg); --blur:none;
+  --r:6px; --r-chip:999px; --bw:1px; --card-bw:1px; --bar:5px; --shadow:none; --title-w:620;
+  --c-invest:#C77F00; --c-tariff:#B83A4B; --c-trade:#2F6FB2; --c-logistics:#13838F;
+  --c-law:#6B5BA5; --c-consumer:#C2557E; --c-industry:#5E7A2E;
+  --focus:#2F6FB2;
+  color-scheme:light;
+}
+[data-mode="dark"]{
+  --bg:#0F1A24; --surface:#172532; --ink:#E3EAF0; --muted:#93A3B2; --line:#26384A; --soft:#1C2D3C;
+  --c-invest:#E9A53A; --c-tariff:#EF7B8B; --c-trade:#6EA6E0; --c-logistics:#4CC3CC;
+  --c-law:#A99DD0; --c-consumer:#EB8DB3; --c-industry:#A3C267;
+  --focus:#6EA6E0; color-scheme:dark;
+}
+/* 각진 */
+[data-theme="square"]{--bg:#EDEDE8;--surface:#FFFFFF;--ink:#1A1A1A;--muted:#55554F;--line:#1A1A1A;--soft:#F5F5F0;--r:0;--r-chip:0;--bw:2px;--card-bw:2px;--bar:0px;--shadow:4px 4px 0 var(--ink);--title-w:750}
+[data-theme="square"][data-mode="dark"]{--bg:#1C1C1A;--surface:#272724;--ink:#F2F2EA;--muted:#B5B5AA;--line:#F2F2EA;--soft:#31312D}
+/* 둥근 */
+[data-theme="round"]{--bg:#EDF0F6;--surface:#FFFFFF;--ink:#1F2A44;--muted:#6A7590;--line:#DDE2EE;--soft:#F4F6FB;--r:18px;--card-bw:0px;--bar:0px;--shadow:0 2px 12px rgba(31,42,68,.08)}
+[data-theme="round"][data-mode="dark"]{--bg:#151925;--surface:#212736;--ink:#E6E9F2;--muted:#9AA3BA;--line:#2F3749;--soft:#1A1F2D;--shadow:0 2px 12px rgba(0,0,0,.35)}
+/* 귀여운 */
+[data-theme="cute"]{--font:"Jua","Pretendard Variable","Malgun Gothic",sans-serif;--bg:#FFF2F6;--surface:#FFFFFF;--ink:#5A3E52;--muted:#A0819A;--line:#F6CFDE;--soft:#FFF7FA;--r:20px;--bw:2px;--card-bw:2px;--bar:0px;--title-w:400;
+  --c-invest:#E08A1E;--c-tariff:#E0557A;--c-trade:#3D8FD6;--c-logistics:#20A493;--c-law:#8C66D9;--c-consumer:#E0609F;--c-industry:#5FA33A;--focus:#E0609F}
+[data-theme="cute"][data-mode="dark"]{--bg:#2A1E2A;--surface:#382838;--ink:#FBE8F1;--muted:#C9A9BE;--line:#5A3F57;--soft:#312331;
+  --c-invest:#F5B567;--c-tariff:#F590AA;--c-trade:#8CC2F2;--c-logistics:#6AD8C6;--c-law:#BFA2F5;--c-consumer:#F59CC8;--c-industry:#A6D98A}
+/* 신문 */
+[data-theme="paper"]{--font:"Noto Serif KR","Batang","Nanum Myeongjo",serif;--bg:#F6F2E9;--surface:#FFFDF8;--ink:#2B2620;--muted:#6E665A;--line:#D9D1C1;--soft:#F1ECE1;--r:0;--r-chip:2px;--bar:3px;--title-w:700}
+[data-theme="paper"][data-mode="dark"]{--bg:#1B1A17;--surface:#24221E;--ink:#ECE6D8;--muted:#A9A190;--line:#3A362F;--soft:#2A2824}
+/* 터미널 */
+[data-theme="terminal"]{--font:"Nanum Gothic Coding","D2Coding",Consolas,"GulimChe",monospace;--bg:#EEF4EC;--surface:#FAFDF9;--ink:#1D3A22;--muted:#4F6B53;--line:#B9CDB8;--soft:#E4EEE2;--r:2px;--r-chip:2px;--title-w:700;
+  --c-invest:#9A6B00;--c-tariff:#A33B3B;--c-trade:#2E6A8E;--c-logistics:#1E7A4C;--c-law:#6A4E8E;--c-consumer:#9A3F72;--c-industry:#4D6E1C;--focus:#1E7A4C}
+[data-theme="terminal"][data-mode="dark"]{--bg:#0B120C;--surface:#111C12;--ink:#B8F5C0;--muted:#6FA77A;--line:#1F3A24;--soft:#0E1810;
+  --c-invest:#FFC857;--c-tariff:#FF7B7B;--c-trade:#7CC8FF;--c-logistics:#5CF09A;--c-law:#C9A8FF;--c-consumer:#FF9ED2;--c-industry:#C8F06A}
+/* 바다 */
+[data-theme="ocean"]{--bg:#E3EEF6;--surface:#FFFFFF;--ink:#0D3150;--muted:#4D6A84;--line:#C2D6E6;--soft:#EEF5FA;--r:10px;--focus:#1468A8}
+[data-theme="ocean"][data-mode="dark"]{--bg:#06192A;--surface:#0D2840;--ink:#DDEBF7;--muted:#86A6C2;--line:#1A3A57;--soft:#0A2236}
+/* 숲 */
+[data-theme="forest"]{--bg:#ECF1E8;--surface:#FFFFFF;--ink:#22361F;--muted:#5C6F57;--line:#CAD6C3;--soft:#F3F7F0;--r:8px;--focus:#3F7A33}
+[data-theme="forest"][data-mode="dark"]{--bg:#111910;--surface:#1A2518;--ink:#E2ECDD;--muted:#94A88E;--line:#2A3A27;--soft:#151F14}
+/* 노을 */
+[data-theme="sunset"]{--bg:#FFF0E6;--surface:#FFFFFF;--ink:#4A2333;--muted:#8A6170;--line:#F2D2C4;--soft:#FFF7F2;--r:12px;--focus:#D2523A}
+[data-theme="sunset"][data-mode="dark"]{--bg:#24121A;--surface:#321E27;--ink:#F8E4E8;--muted:#C49AA7;--line:#4A2F3A;--soft:#2A1820}
+/* 유리 */
+[data-theme="glass"]{--bg:#DCE3F7;--bg-img:linear-gradient(160deg,#C9D6FF 0%,#E8E1F7 55%,#F7E4EE 100%);--surface:rgba(255,255,255,.58);--ink:#1E2340;--muted:#5D6285;--line:rgba(255,255,255,.75);--soft:rgba(255,255,255,.45);
+  --head-bg:rgba(240,243,255,.55);--blur:blur(14px);--r:14px;--bar:4px;--shadow:0 4px 18px rgba(60,70,140,.12)}
+[data-theme="glass"][data-mode="dark"]{--bg:#1A1D36;--bg-img:linear-gradient(160deg,#1B1F3A 0%,#2A1E3C 60%,#1E2A3A 100%);--surface:rgba(255,255,255,.07);--ink:#E8EAF8;--muted:#A3A8CC;--line:rgba(255,255,255,.12);--soft:rgba(255,255,255,.06);--head-bg:rgba(26,29,54,.6);--shadow:0 4px 18px rgba(0,0,0,.35)}
+/* 고대비 */
+[data-theme="contrast"]{--bg:#FFFFFF;--surface:#FFFFFF;--ink:#000000;--muted:#333333;--line:#000000;--soft:#F0F0F0;--r:4px;--bw:2px;--card-bw:2px;--bar:6px;--title-w:750;
+  --c-invest:#8A4B00;--c-tariff:#A0001E;--c-trade:#003F9E;--c-logistics:#00616B;--c-law:#4B2A8F;--c-consumer:#8F0058;--c-industry:#2F5200;--focus:#003F9E}
+[data-theme="contrast"][data-mode="dark"]{--bg:#000000;--surface:#000000;--ink:#FFFFFF;--muted:#DDDDDD;--line:#FFFFFF;--soft:#1A1A1A;
+  --c-invest:#FFD24A;--c-tariff:#FF8A9A;--c-trade:#8CC4FF;--c-logistics:#5FF0E0;--c-law:#D4B8FF;--c-consumer:#FF9FD9;--c-industry:#C9F27A;--focus:#FFD24A}
+
+/* ───── 레이아웃 ───── */
+*{box-sizing:border-box}
+html{font-size:14px}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);background-image:var(--bg-img);background-attachment:fixed;color:var(--ink);font-family:var(--font);font-size:1rem;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+[hidden]{display:none!important}
+
+header{position:sticky;top:0;z-index:5;background:var(--head-bg);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);padding:calc(1rem + env(safe-area-inset-top, 0px)) 1rem .7rem;border-bottom:var(--bw) solid var(--line)}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
+h1{margin:0;font-size:1.36rem;font-weight:750;letter-spacing:-.02em;line-height:1.25}
+[data-theme="cute"] h1{font-weight:400}
+.updated{color:var(--muted);font-size:.86rem}
+.tbtns{display:flex;gap:.4rem}
+.btn{border:var(--bw) solid var(--line);background:var(--surface);border-radius:min(var(--r),10px);padding:.4rem .7rem;cursor:pointer;font-size:.93rem;white-space:nowrap}
+.btn[disabled]{opacity:.6;cursor:progress}
+.icon{width:2.3rem;padding:.4rem 0;text-align:center}
+
+.views{display:flex;gap:.3rem;margin:.7rem 0 0}
+.views button{border:0;background:none;padding:.4rem .7rem .5rem;font-size:1rem;font-weight:650;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
+.views button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+.views b{font-variant-numeric:tabular-nums;margin-left:.2rem}
+
+.radar{display:flex;height:.55rem;border-radius:min(var(--r),4px);overflow:hidden;margin:.85rem 0 .3rem;background:var(--line)}
+.radar span{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:.3rem .4rem;margin-bottom:.4rem}
+.chip{border:var(--bw) solid var(--line);background:var(--surface);border-radius:var(--r-chip);padding:.2rem .7rem .2rem .55rem;font-size:.89rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem}
+.chip i{width:.55rem;height:.55rem;border-radius:50%;display:inline-block}
+[data-theme="square"] .chip i,[data-theme="terminal"] .chip i{border-radius:0}
+.chip b{font-weight:650;font-variant-numeric:tabular-nums}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.substages{display:flex;flex-wrap:wrap;gap:.3rem;margin:0 0 .5rem;padding-left:.4rem;border-left:2px solid var(--c-invest)}
+.substages .chip{font-size:.82rem;padding:.1rem .6rem}
+
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.3rem}
+.seg{display:flex;border:var(--bw) solid var(--line);border-radius:min(var(--r),10px);overflow:hidden;background:var(--surface)}
+.seg button{flex:1;border:0;background:transparent;padding:.35rem 0;font-size:.89rem;cursor:pointer;color:var(--muted)}
+.seg button+button{border-left:var(--bw) solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--soft);color:var(--ink);font-weight:650}
+.search{grid-column:1/-1;display:flex;gap:.4rem}
+.search input,.search select{border:var(--bw) solid var(--line);background:var(--surface);border-radius:min(var(--r),10px);padding:.4rem .7rem}
+.search input{flex:1;min-width:0}
+
+main{padding:.7rem .7rem 1.7rem;max-width:760px;margin:0 auto}
+footer{padding-bottom:calc(1.4rem + env(safe-area-inset-bottom, 0px))!important}
+@media (min-width:800px){header>*{max-width:736px;margin-left:auto;margin-right:auto}}
+.item{content-visibility:auto;contain-intrinsic-size:auto 9rem;position:relative;background:var(--surface);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-radius:var(--r);padding:.7rem .85rem .7rem calc(.85rem + var(--bar));margin-bottom:.6rem;border:var(--card-bw) solid var(--line);box-shadow:var(--shadow)}
+.item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--bar);border-radius:var(--r) 0 0 var(--r);background:var(--c)}
+[data-theme="square"] .item{border-left:8px solid var(--c)}
+[data-theme="cute"] .item,[data-theme="round"] .item{border-top:4px solid var(--c)}
+[data-theme="round"] .item{border-top:0}
+[data-theme="round"] .item .ttl{color:var(--ink)}
+.t-invest{--c:var(--c-invest)} .t-tariff{--c:var(--c-tariff)} .t-trade{--c:var(--c-trade)} .t-logistics{--c:var(--c-logistics)}
+.t-law{--c:var(--c-law)} .t-consumer{--c:var(--c-consumer)} .t-industry{--c:var(--c-industry)}
+.row1{display:flex;align-items:center;gap:.5rem;font-size:.89rem;min-width:0}
+.ttl{color:var(--c);font-weight:700;white-space:nowrap}
+[data-theme="round"] .ttl{background:color-mix(in srgb,var(--c) 14%,transparent);color:var(--c);padding:.05rem .55rem;border-radius:999px}
+.emo{display:none}
+[data-theme="cute"] .emo{display:inline}
+.stage{font-size:.8rem;font-weight:650;border:1px solid var(--c);color:var(--c);border-radius:var(--r-chip);padding:0 .45rem;white-space:nowrap}
+.amt{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.where{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.check{margin-left:auto;flex:none;border:var(--bw) solid var(--line);background:var(--surface);border-radius:min(var(--r),8px);cursor:pointer;font-size:.86rem;padding:.1rem .55rem;color:var(--muted);white-space:nowrap}
+.check[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.check.plain[aria-pressed="true"]{background:var(--surface);color:var(--muted);border-color:var(--line)}
+.title{display:block;margin:.3rem 0 .15rem;font-size:1.07rem;font-weight:var(--title-w);line-height:1.42;color:var(--ink);text-decoration:none;letter-spacing:-.01em}
+.title:hover{text-decoration:underline;text-underline-offset:3px}
+.watch{background:color-mix(in srgb,var(--c-invest) 25%,transparent);color:inherit;border-radius:3px;padding:0 .2rem}
+.orig,.sum{margin:.3rem 0;color:var(--muted);font-size:.89rem}
+.hint{margin:.45rem 0;font-size:.89rem;padding:.3rem .55rem;border-radius:min(var(--r),8px);background:color-mix(in srgb,var(--c) 12%,transparent)}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:.25rem .55rem;font-size:.86rem;color:var(--muted)}
+.tag{border:1px solid var(--line);border-radius:min(var(--r),6px);padding:0 .35rem}
+.toggle{border:0;background:none;color:var(--muted);text-decoration:underline;text-underline-offset:2px;cursor:pointer;font-size:.86rem;padding:0;margin-left:auto}
+/* 간단히 보기 */
+[data-density="compact"] .item{padding-top:.45rem;padding-bottom:.45rem;margin-bottom:.35rem}
+[data-density="compact"] .hint,[data-density="compact"] .tag,[data-density="compact"] .sum{display:none}
+[data-density="compact"] .title{margin:.15rem 0 .05rem;font-size:1rem}
+
+.ctools{display:flex;gap:.4rem;align-items:center;margin-top:.7rem}
+.ctools .seg{flex:1}
+.work{display:flex;gap:.4rem;margin-top:.55rem;align-items:flex-start}
+.work select{border:var(--bw) solid var(--line);background:var(--soft);border-radius:min(var(--r),8px);padding:.3rem .4rem;font-size:.89rem}
+.st-todo{color:var(--c-invest);font-weight:650}.st-doing{color:var(--c-trade);font-weight:650}.st-done{color:var(--c-industry);font-weight:650}
+.work textarea{flex:1;min-width:0;min-height:3.7rem;resize:vertical;border:var(--bw) solid var(--line);background:var(--soft);border-radius:min(var(--r),8px);padding:.3rem .55rem;font-size:.89rem;color:var(--ink)}
+.cdate{color:var(--muted)}
+.saved{color:var(--c-industry);font-size:.82rem;min-width:3rem}
+.done .title{color:var(--muted)}
+.more{display:block;width:100%;margin:.4rem 0 .6rem;padding:.6rem;border:var(--bw) dashed var(--line);background:transparent;border-radius:var(--r);cursor:pointer;color:var(--muted);font-size:.93rem}
+.empty{color:var(--muted);text-align:center;padding:2.8rem 1rem}
+footer{color:var(--muted);font-size:.82rem;text-align:center;padding:0 1rem 1.4rem}
+
+/* ───── 설정 시트 ───── */
+.sheet-wrap{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.35);display:flex;align-items:flex-end}
+.sheet{width:100%;max-height:88vh;overflow:auto;background:var(--surface);background-color:var(--bg);color:var(--ink);border-radius:16px 16px 0 0;padding:1rem 1rem 1.4rem;border-top:var(--bw) solid var(--line)}
+[data-theme="square"] .sheet,[data-theme="paper"] .sheet{border-radius:0}
+.sheet h2{margin:0 0 .2rem;font-size:1.15rem}
+.sheet h3{margin:1.1rem 0 .45rem;font-size:.93rem;color:var(--muted);font-weight:650}
+.sheet-head{display:flex;justify-content:space-between;align-items:center}
+.themes{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem}
+.th{border:2px solid var(--line);background:var(--surface);border-radius:10px;padding:.4rem;cursor:pointer;text-align:left;font-size:.86rem}
+.th[aria-pressed="true"]{border-color:var(--ink)}
+.th .pv{display:flex;height:2.2rem;border-radius:6px;overflow:hidden;margin-bottom:.3rem;border:1px solid rgba(0,0,0,.08)}
+.th .pv span{flex:1}
+.fs{display:flex;align-items:center;gap:.6rem}
+.fs input{flex:1;accent-color:var(--ink)}
+.fs output{min-width:2.6rem;text-align:right;font-variant-numeric:tabular-nums;font-weight:650}
+.sample{margin:.5rem 0 0;color:var(--muted);font-size:.89rem}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div>
+      <h1 data-i18n="appTitle">베트남 영업 레이더</h1>
+      <div class="updated" id="updated"></div>
+    </div>
+    <div class="tbtns">
+      <button class="btn" id="refresh" type="button" data-i18n="refresh">지금 수집</button>
+      <button class="btn icon" id="openSettings" type="button" aria-label="화면 설정" title="화면 설정" data-i18n-aria="settings">⚙</button>
+    </div>
+  </div>
+  <div class="views" id="views" role="tablist">
+    <button type="button" data-v="news" aria-pressed="true"><span data-i18n="news">뉴스</span><b id="nNews"></b></button>
+    <button type="button" data-v="checks" aria-pressed="false"><span data-i18n="checklist">체크 목록</span><b id="nChecks"></b></button>
+  </div>
+  <div id="newsTools">
+    <div class="radar" id="radar" aria-hidden="true"></div>
+    <div class="legend" id="legend"></div>
+    <div class="substages" id="substages" hidden></div>
+    <div class="controls">
+      <div class="seg" id="period" role="group" aria-label="기간">
+        <button type="button" data-v="1" aria-pressed="false" data-i18n="d1">24시간</button>
+        <button type="button" data-v="3" aria-pressed="true" data-i18n="d3">3일</button>
+        <button type="button" data-v="7" aria-pressed="false" data-i18n="d7">7일</button>
+      </div>
+      <div class="seg" id="zone" role="group" aria-label="권역">
+        <button type="button" data-v="all" aria-pressed="true" data-i18n="zAll">전국</button>
+        <button type="button" data-v="북부" aria-pressed="false" data-i18n="zN">북부</button>
+        <button type="button" data-v="중부" aria-pressed="false" data-i18n="zC">중부</button>
+        <button type="button" data-v="남부" aria-pressed="false" data-i18n="zS">남부</button>
+      </div>
+      <div class="search">
+        <input id="q" type="search" placeholder="회사·지역·품목 검색 (예: 박닌, 관세)" aria-label="검색" data-i18n-ph="search">
+        <select id="sort" aria-label="정렬">
+          <option value="new" data-i18n="sNew">최신순</option>
+          <option value="score" data-i18n="sScore">중요도순</option>
+          <option value="amt" data-i18n="sAmt">금액순</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div id="checkTools" hidden>
+    <div class="ctools">
+      <div class="seg" id="cstatus" role="group" aria-label="진행 상태">
+        <button type="button" data-v="all" aria-pressed="true" data-i18n="all">전체</button>
+        <button type="button" data-v="확인 필요" aria-pressed="false" data-i18n="stTodo">확인 필요</button>
+        <button type="button" data-v="진행 중" aria-pressed="false" data-i18n="stDoing">진행 중</button>
+        <button type="button" data-v="완료" aria-pressed="false" data-i18n="stDone">완료</button>
+      </div>
+      <button type="button" class="btn" id="export" data-i18n="export">엑셀로 내보내기</button>
+    </div>
+  </div>
+</header>
+<main id="list"></main>
+<footer data-i18n="footer">번역은 무료 자동 번역 결과이며, 분야·단계 분류는 키워드 규칙으로 판정합니다. 중요한 건은 원문을 확인하세요.</footer>
+
+<div class="sheet-wrap" id="settings" hidden>
+  <section class="sheet" role="dialog" aria-modal="true" aria-labelledby="stTitle">
+    <div class="sheet-head">
+      <h2 id="stTitle" data-i18n="settings">화면 설정</h2>
+      <button class="btn" type="button" id="closeSettings" data-i18n="close">닫기</button>
+    </div>
+    <h3 data-i18n="language">언어</h3>
+    <div class="seg" id="lang" role="group" aria-label="언어">
+      <button type="button" data-v="ko">한국어</button>
+      <button type="button" data-v="en">English</button>
+    </div>
+    <p class="sample" id="langNote" hidden></p>
+    <h3 data-i18n="theme">테마</h3>
+    <div class="themes" id="themes"></div>
+    <h3 data-i18n="mode">화면 모드</h3>
+    <div class="seg" id="mode" role="group" aria-label="화면 모드">
+      <button type="button" data-v="auto" data-i18n="mAuto">윈도우 설정 따름</button>
+      <button type="button" data-v="light" data-i18n="mLight">라이트</button>
+      <button type="button" data-v="dark" data-i18n="mDark">다크</button>
+    </div>
+    <h3 data-i18n="fontSize">글자 크기</h3>
+    <div class="fs">
+      <button class="btn icon" type="button" id="fsDown" aria-label="글자 작게" data-i18n="fsDn">가−</button>
+      <input type="range" id="fs" min="11" max="20" step="1" aria-label="글자 크기">
+      <button class="btn icon" type="button" id="fsUp" aria-label="글자 크게" data-i18n="fsUp">가+</button>
+      <output id="fsOut"></output>
+    </div>
+    <p class="sample" data-i18n="fsNote">작게 하면 한 화면에 더 많은 기사가 보입니다.</p>
+    <h3 data-i18n="density">보기 방식</h3>
+    <div class="seg" id="density" role="group" aria-label="보기 방식">
+      <button type="button" data-v="full" data-i18n="dFull">자세히 (영업 포인트·태그 표시)</button>
+      <button type="button" data-v="compact" data-i18n="dCompact">간단히 (제목 위주)</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const TOPICS = [
+  ["invest","투자·공장","🏭"],["tariff","관세·통상","🧾"],["trade","수출입","🚢"],["logistics","물류·운송","🚚"],
+  ["law","법령·제도","📜"],["consumer","소비·유통","🛍️"],["industry","산업 동향","📈"]
+];
+const TOPIC = Object.fromEntries(TOPICS.map(([k,l,e]) => [k,{l,e}]));
+const STAGES = [["construct","착공"],["license","인허가"],["operate","가동·준공"],["plan","계획·MOU"]];
+const THEMES = [
+  ["harbor","기본",["#E9EEF1","#FFFFFF","#15263A","#C77F00"]],
+  ["square","각진",["#EDEDE8","#FFFFFF","#1A1A1A","#1A1A1A"]],
+  ["round","둥근",["#EDF0F6","#FFFFFF","#1F2A44","#2F6FB2"]],
+  ["cute","귀여운",["#FFF2F6","#FFFFFF","#F6CFDE","#E0609F"]],
+  ["paper","신문",["#F6F2E9","#FFFDF8","#2B2620","#B83A4B"]],
+  ["terminal","터미널",["#0B120C","#111C12","#5CF09A","#FFC857"]],
+  ["ocean","바다",["#E3EEF6","#FFFFFF","#0D3150","#13838F"]],
+  ["forest","숲",["#ECF1E8","#FFFFFF","#22361F","#5E7A2E"]],
+  ["sunset","노을",["#FFF0E6","#FFFFFF","#4A2333","#D2523A"]],
+  ["glass","유리",["#C9D6FF","#E8E1F7","#F7E4EE","#1E2340"]],
+  ["contrast","고대비",["#FFFFFF","#000000","#FFFFFF","#003F9E"]],
+];
+
+
+/* ───── 언어 ───── */
+const I18N = {
+ ko:{appTitle:"베트남 영업 레이더",refresh:"지금 수집",reload:"새로고침",auto:"매시간 자동 업데이트",busy:"수집 중…",translating:"번역 중…",settings:"화면 설정",news:"뉴스",checklist:"체크 목록",
+  d1:"24시간",d3:"3일",d7:"7일",zAll:"전국",zN:"북부",zC:"중부",zS:"남부",search:"회사·지역·품목 검색 (예: 박닌, 관세)",
+  sNew:"최신순",sScore:"중요도순",sAmt:"금액순",all:"전체",stTodo:"확인 필요",stDoing:"진행 중",stDone:"완료",export:"엑셀로 내보내기",
+  footer:"번역은 무료 자동 번역 결과이며, 분야·단계 분류는 키워드 규칙으로 판정합니다. 중요한 건은 원문을 확인하세요.",
+  close:"닫기",fsDn:"가−",fsUp:"가+",language:"언어",theme:"테마",mode:"화면 모드",mAuto:"윈도우 설정 따름",mLight:"라이트",mDark:"다크",fontSize:"글자 크기",
+  fsNote:"작게 하면 한 화면에 더 많은 기사가 보입니다.",density:"보기 방식",dFull:"자세히 (영업 포인트·태그 표시)",dCompact:"간단히 (제목 위주)",
+  check:"체크",checked:"✓ 체크됨",uncheck:"체크 해제",orig:"원문",origClose:"원문 닫기",memo:"메모 (담당자, 연락 내용, 다음 액션)",saved:"저장됨",
+  checkedOn:"체크",minAgo:"분 전",hourAgo:"시간 전",updated:"업데이트",
+  emptyNone:"아직 수집된 소식이 없습니다. 위의 ‘지금 수집’을 누르세요.",emptyFilter:"조건에 맞는 소식이 없습니다. 기간을 늘리거나 필터를 해제하세요.",
+  emptyChecks:"뉴스 탭에서 ‘체크’를 누르면 여기에 모입니다. 체크한 기사는 7일이 지나도 지워지지 않습니다.",emptyStatus:"이 상태의 기사가 없습니다.",
+  exported:"다운로드 폴더에 저장했습니다.",exportFail:"내보내지 못했습니다: ",browserMode:"브라우저 모드에서는 ‘collect.bat’을 실행한 뒤 새로고침하세요.",
+  collectFail:"수집하지 못했습니다. 인터넷 연결을 확인하세요.",langNote:"최근 기사 제목을 한국어로 번역하고 있습니다. 끝나면 화면이 새로 고쳐집니다.",
+  stages:{construct:"착공",license:"인허가",operate:"가동·준공",plan:"계획·MOU"},
+  topics:{invest:"투자·공장",tariff:"관세·통상",trade:"수출입",logistics:"물류·운송",law:"법령·제도",consumer:"소비·유통",industry:"산업 동향"},
+  themes:{harbor:"기본",square:"각진",round:"둥근",cute:"귀여운",paper:"신문",terminal:"터미널",ocean:"바다",forest:"숲",sunset:"노을",glass:"유리",contrast:"고대비"}},
+ en:{appTitle:"Vietnam Sales Radar",refresh:"Collect now",reload:"Refresh",auto:"updates hourly",busy:"Collecting…",translating:"Translating…",settings:"Display settings",news:"News",checklist:"Checklist",
+  d1:"24h",d3:"3 days",d7:"7 days",zAll:"All",zN:"North",zC:"Central",zS:"South",search:"Search (e.g. Bac Ninh, tariff)",
+  sNew:"Newest",sScore:"Relevance",sAmt:"Amount",all:"All",stTodo:"To check",stDoing:"In progress",stDone:"Done",export:"Export to Excel",
+  footer:"Titles are machine-translated, and topics and stages are assigned by keyword rules. Check the original for anything important.",
+  close:"Close",fsDn:"A−",fsUp:"A+",language:"Language",theme:"Theme",mode:"Appearance",mAuto:"Follow Windows",mLight:"Light",mDark:"Dark",fontSize:"Text size",
+  fsNote:"Smaller text fits more articles on one screen.",density:"Layout",dFull:"Detailed (sales tips, tags)",dCompact:"Compact (titles only)",
+  check:"Check",checked:"✓ Checked",uncheck:"Uncheck",orig:"Original",origClose:"Hide original",memo:"Memo (contact, notes, next step)",saved:"Saved",
+  checkedOn:"Checked",minAgo:"m ago",hourAgo:"h ago",updated:"Updated",
+  emptyNone:"Nothing collected yet. Press ‘Collect now’ above.",emptyFilter:"No articles match. Widen the period or clear filters.",
+  emptyChecks:"Press ‘Check’ on any article in News to save it here. Checked articles are kept after 7 days.",emptyStatus:"No articles with this status.",
+  exported:"Saved to your Downloads folder.",exportFail:"Couldn’t export: ",browserMode:"In browser mode, run ‘collect.bat’ and then refresh this page.",
+  collectFail:"Couldn’t collect news. Check your internet connection.",langNote:"Translating recent titles into English. The widget reloads when done.",
+  stages:{construct:"Groundbreaking",license:"Licensed",operate:"Operational",plan:"Plan/MOU"},
+  topics:{invest:"Investment",tariff:"Tariffs",trade:"Trade data",logistics:"Logistics",law:"Regulation",consumer:"Consumer",industry:"Industry"},
+  themes:{harbor:"Default",square:"Square",round:"Rounded",cute:"Cute",paper:"Newspaper",terminal:"Terminal",ocean:"Ocean",forest:"Forest",sunset:"Sunset",glass:"Glass",contrast:"High contrast"}}
+};
+const HINTS = {
+ ko:{construct:"설비·건자재 수입, 프로젝트 화물 수요가 생기는 시점",operate:"원자재 인바운드·완제품 수출 정기 물량 제안 시점",
+  license:"초기 접촉 적기: 현지 법인·구매 담당자 파악",plan:"관심 리스트에 등록하고 진행 상황 추적",
+  invest:"공장 신설·증설: 설비 반입부터 정기 물량까지 선점",tariff:"고객사 원가·원산지 영향 → 통관·대체 루트 제안 기회",
+  trade:"품목·국가별 물량 변화 → 성장 품목 화주 공략",logistics:"운임·항만·인프라 변화 → 서비스·견적 전략 점검",
+  law:"통관·세제 규정 변경 → 고객 안내·컴플라이언스 포인트",consumer:"내수·이커머스 성장 → 유통·라스트마일 물류 수요",
+  industry:"업종별 경기 흐름 → 타깃 업종·고객 우선순위 조정"},
+ en:{construct:"Equipment and building materials imports begin: project cargo demand",operate:"Pitch regular inbound materials and export volumes",
+  license:"Best time for first contact: find the local entity and purchasing team",plan:"Add to watch list and track progress",
+  invest:"New or expanded plant: win the move-in cargo, then the regular volumes",tariff:"Affects client costs and origin rules: pitch customs and alternative routes",
+  trade:"Volume shifts by product and country: target shippers in growing categories",logistics:"Rates, ports and infrastructure changing: review services and quotes",
+  law:"Customs or tax rule change: a reason to brief clients on compliance",consumer:"Domestic and e-commerce growth: distribution and last-mile demand",
+  industry:"Sector momentum: adjust which industries and clients to prioritize"}
+};
+const EN_NAMES = {"하노이":"Hanoi","하이퐁":"Hai Phong","박닌":"Bac Ninh","박장":"Bac Giang","하이즈엉":"Hai Duong","흥옌":"Hung Yen","빈푹":"Vinh Phuc",
+ "푸토":"Phu Tho","타이응우옌":"Thai Nguyen","꽝닌":"Quang Ninh","타이빈":"Thai Binh","하남":"Ha Nam","남딘":"Nam Dinh","닌빈":"Ninh Binh","탄호아":"Thanh Hoa",
+ "응에안":"Nghe An","하띤":"Ha Tinh","다낭":"Da Nang","꽝남":"Quang Nam","꽝응아이":"Quang Ngai","빈딘":"Binh Dinh","칸호아":"Khanh Hoa","호치민":"HCMC",
+ "빈즈엉":"Binh Duong","동나이":"Dong Nai","바리아붕따우":"Ba Ria-Vung Tau","롱안":"Long An","떠이닌":"Tay Ninh","빈프억":"Binh Phuoc","껀터":"Can Tho",
+ "한국계":"Korean","중국계":"Chinese","일본계":"Japanese","대만계":"Taiwanese","싱가포르계":"Singaporean","미국계":"US","유럽계":"European",
+ "전자·반도체":"Electronics","섬유·신발":"Textile & footwear","배터리·EV":"Battery & EV","자동차":"Automotive","화학·소재":"Chemicals",
+ "철강·금속":"Steel & metals","식품·농수산":"Food & seafood","에너지":"Energy","물류·창고":"Logistics","산업단지":"Industrial park","가구·목재":"Furniture & wood"};
+const L = () => settings.lang === "en" ? "en" : "ko";
+const T = k => I18N[L()][k] ?? I18N.ko[k];
+const nm = x => L() === "en" ? (EN_NAMES[x] || x) : x;
+const STATUS_LABEL = {"확인 필요":"stTodo","진행 중":"stDoing","완료":"stDone"};
+function fmtAmount(m){
+  if (!m) return "";
+  if (L() === "en") return m >= 1000 ? `$${+(m/1000).toFixed(2)}B` : `$${+m.toFixed(1)}M`;
+  const man = Math.round(m * 100), eok = Math.floor(man / 10000), rest = man % 10000;
+  return eok && rest ? `${eok.toLocaleString()}억 ${rest.toLocaleString()}만 달러` : eok ? `${eok.toLocaleString()}억 달러` : `${rest.toLocaleString()}만 달러`;
+}
+function applyLang(){
+  document.documentElement.lang = L();
+  document.querySelectorAll("[data-i18n]").forEach(el => el.textContent = T(el.dataset.i18n));
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => el.placeholder = T(el.dataset.i18nPh));
+  document.querySelectorAll("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", T(el.dataset.i18nAria)); el.title = T(el.dataset.i18nAria); });
+  document.title = T("appTitle");
+  document.querySelectorAll(".th").forEach(b => b.lastChild.textContent = I18N[L()].themes[b.dataset.v]);
+  document.querySelectorAll("#lang button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === L()));
+}
+
+/* ───── 설정 ───── */
+const hasApi = () => !!(window.pywebview && window.pywebview.api);
+const DEFAULT_SETTINGS = {theme:"harbor", mode:"auto", fs:14, density:"full", lang:"ko"};
+let settings = {...DEFAULT_SETTINGS, ...((DATA && DATA.settings) || {})};
+try { Object.assign(settings, JSON.parse(localStorage.getItem("radar-settings") || "{}")); } catch(e) {}
+const mq = window.matchMedia("(prefers-color-scheme: dark)");
+function applySettings(){
+  const root = document.documentElement;
+  root.dataset.theme = settings.theme;
+  root.dataset.mode = settings.mode === "auto" ? (mq.matches ? "dark" : "light") : settings.mode;
+  root.dataset.density = settings.density;
+  root.style.fontSize = settings.fs + "px";
+  document.getElementById("fs").value = settings.fs;
+  document.getElementById("fsOut").textContent = settings.fs + "px";
+  document.querySelectorAll("#mode button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.mode));
+  document.querySelectorAll("#density button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.density));
+  document.querySelectorAll(".th").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === settings.theme));
+  applyLang();
+}
+function saveSettings(){
+  applySettings();
+  try { localStorage.setItem("radar-settings", JSON.stringify(settings)); } catch(e) {}
+  if (hasApi()) window.pywebview.api.save_settings(settings);
+}
+mq.addEventListener && mq.addEventListener("change", () => settings.mode === "auto" && applySettings());
+document.getElementById("themes").innerHTML = THEMES.map(([k,l,c]) =>
+  `<button type="button" class="th" data-v="${k}" aria-pressed="false"><span class="pv">${c.map(x => `<span style="background:${x}"></span>`).join("")}</span>${l}</button>`).join("");
+document.getElementById("themes").addEventListener("click", e => { const b = e.target.closest(".th"); if (b) { settings.theme = b.dataset.v; saveSettings(); } });
+document.getElementById("mode").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { settings.mode = b.dataset.v; saveSettings(); } });
+document.getElementById("lang").addEventListener("click", async e => {
+  const b = e.target.closest("button"); if (!b || b.dataset.v === settings.lang) return;
+  settings.lang = b.dataset.v; saveSettings(); render();
+  const key = "title_" + L();
+  const missing = items.filter(it => !it[key] && it.lang !== L()).length;
+  if (hasApi() && missing) {
+    const note = document.getElementById("langNote"); note.textContent = T("langNote"); note.hidden = false;
+    window.radarBusy(true, T("translating"));
+    const r = await window.pywebview.api.fill_language(L());
+    if (r && r.ok) location.reload(); else { note.hidden = true; window.radarBusy(false); }
+  }
+});
+document.getElementById("density").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { settings.density = b.dataset.v; saveSettings(); } });
+document.getElementById("fs").addEventListener("input", e => { settings.fs = +e.target.value; saveSettings(); });
+document.getElementById("fsDown").addEventListener("click", () => { settings.fs = Math.max(11, settings.fs - 1); saveSettings(); });
+document.getElementById("fsUp").addEventListener("click", () => { settings.fs = Math.min(20, settings.fs + 1); saveSettings(); });
+const sheet = document.getElementById("settings");
+document.getElementById("openSettings").addEventListener("click", () => { sheet.hidden = false; document.getElementById("closeSettings").focus(); });
+document.getElementById("closeSettings").addEventListener("click", () => { sheet.hidden = true; });
+sheet.addEventListener("click", e => { if (e.target === sheet) sheet.hidden = true; });
+document.addEventListener("keydown", e => { if (e.key === "Escape") sheet.hidden = true; });
+applySettings();
+
+/* ───── 데이터 ───── */
+const PAGE = 60;
+const state = {limit:PAGE, view:"news", days:3, zone:"all", topic:"all", stage:"all", q:"", sort:"new", cstatus:"all"};
+const STATUS = ["확인 필요","진행 중","완료"];
+const STATUS_CLASS = {"확인 필요":"st-todo","진행 중":"st-doing","완료":"st-done"};
+const items = (DATA && DATA.items) || [];
+let checks = (DATA && DATA.checks) || {};
+try { const local = JSON.parse(localStorage.getItem("radar-checks") || "{}") || {}; for (const k in local) if (!checks[k]) checks[k] = local[k]; } catch(e) {}
+function persist(id){
+  try { localStorage.setItem("radar-checks", JSON.stringify(checks)); } catch(e) {}
+  if (!hasApi()) return Promise.resolve();
+  return checks[id] ? window.pywebview.api.save_check(checks[id]) : window.pywebview.api.remove_check(id);
+}
+function toggleCheck(id){
+  if (checks[id]) delete checks[id];
+  else { const it = items.find(i => i.id === id); if (!it) return;
+    checks[id] = {item: it, status: "확인 필요", memo: "", checked_at: new Date().toISOString()}; }
+  persist(id); const y = window.scrollY; render(); window.scrollTo(0, y);
+}
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const when = it => new Date(it.published || it.fetched).getTime();
+const topicOf = it => TOPIC[it.topic] ? it.topic : "invest";
+function ago(t){
+  const m = Math.round((Date.now() - t) / 60000);
+  if (m < 60) return Math.max(m,1) + T("minAgo");
+  const h = Math.round(m / 60);
+  if (h < 24) return h + T("hourAgo");
+  const d = new Date(t); return (d.getMonth()+1) + "/" + d.getDate();
+}
+function highlight(text, it){
+  let s = esc(text);
+  (it.watch || []).forEach(w => { const re = new RegExp(w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi"); s = s.replace(re, m => `<mark class="watch">${m}</mark>`); });
+  return s;
+}
+function baseFiltered(){
+  const cutoff = Date.now() - state.days * 86400000, q = state.q.trim().toLowerCase();
+  return items.filter(it => {
+    if (when(it) < cutoff) return false;
+    if (state.zone !== "all" && !(it.zones || []).includes(state.zone)) return false;
+    if (q) { const tags = [...(it.regions||[]), ...(it.industries||[]), ...(it.countries||[])];
+      const hay = [it.title_ko, it.title_en, it.title_orig, it.source, it.topic_label, I18N.en.topics[topicOf(it)], ...tags, ...tags.map(x => EN_NAMES[x] || "")].join(" ").toLowerCase(); if (!hay.includes(q)) return false; }
+    return true;
+  });
+}
+function renderLegend(base){
+  const counts = {}; base.forEach(it => { const t = topicOf(it); counts[t] = (counts[t]||0) + 1; });
+  const total = base.length || 1;
+  document.getElementById("radar").innerHTML = TOPICS.map(([k]) => counts[k] ? `<span style="width:${counts[k]/total*100}%;background:var(--c-${k})"></span>` : "").join("");
+  document.getElementById("legend").innerHTML = [["all",T("all"),base.length,"var(--ink)"], ...TOPICS.map(([k]) => [k,I18N[L()].topics[k],counts[k]||0,`var(--c-${k})`])]
+    .map(([k,l,n,c]) => `<button type="button" class="chip" data-topic="${k}" aria-pressed="${state.topic===k}"><i style="background:${c}"></i>${l} <b>${n}</b></button>`).join("");
+  const sub = document.getElementById("substages");
+  sub.hidden = state.topic !== "invest";
+  if (!sub.hidden) {
+    const inv = base.filter(it => topicOf(it) === "invest"), sc = {};
+    inv.forEach(it => sc[it.stage] = (sc[it.stage]||0) + 1);
+    sub.innerHTML = [["all",T("all"),inv.length], ...STAGES.map(([k]) => [k,I18N[L()].stages[k],sc[k]||0])]
+      .map(([k,l,n]) => `<button type="button" class="chip" data-stage="${k}" aria-pressed="${state.stage===k}">${l} <b>${n}</b></button>`).join("");
+  }
+}
+function card(it, c){
+  const t = topicOf(it), lg = L(), checked = !!checks[it.id];
+  const title = it["title_" + lg] || (it.lang === lg ? it.title_orig : "") || it.title_orig;
+  const showOrig = it.lang !== lg;
+  const hasStage = t === "invest" && it.stage && it.stage !== "other";
+  const stage = hasStage ? `<span class="stage">${esc(I18N[lg].stages[it.stage])}</span>` : "";
+  const hint = HINTS[lg][hasStage ? it.stage : t];
+  const summary = it["summary_" + lg];
+  const tags = [...(t === "invest" ? (it.countries||[]) : []), ...(it.industries||[])].map(x => `<span class="tag">${esc(nm(x))}</span>`).join("");
+  const work = c ? `<div class="work">
+      <select data-id="${it.id}" class="status ${STATUS_CLASS[c.status]||""}" aria-label="status">${STATUS.map(x => `<option value="${x}"${x===c.status?" selected":""}>${T(STATUS_LABEL[x])}</option>`).join("")}</select>
+      <textarea data-id="${it.id}" class="memo" rows="1" placeholder="${esc(T("memo"))}">${esc(c.memo)}</textarea>
+      <span class="saved" data-saved="${it.id}"></span></div>` : "";
+  const cd = c ? new Date(c.checked_at) : null;
+  return `<article class="item t-${t}${c && c.status==="완료" ? " done" : ""}">
+    <div class="row1">
+      <span class="ttl"><span class="emo">${TOPIC[t].e} </span>${I18N[lg].topics[t]}</span>${stage}
+      ${it.amount_m ? `<span class="amt">${esc(fmtAmount(it.amount_m))}</span>` : ""}
+      <span class="where">${esc((it.regions||[]).map(nm).join(", "))}</span>
+      <button type="button" class="check${c ? " plain" : ""}" data-id="${it.id}" aria-pressed="${checked}">${checked ? (c ? T("uncheck") : T("checked")) : T("check")}</button>
+    </div>
+    <a class="title" href="${esc(it.link)}" target="_blank" rel="noopener">${highlight(title, it)}</a>
+    ${summary && !c ? `<p class="sum">${esc(summary)}</p>` : ""}
+    ${showOrig ? `<p class="orig" hidden>${esc(it.title_orig)}</p>` : ""}
+    ${!c && hint ? `<p class="hint">${esc(hint)}</p>` : ""}
+    <div class="meta"><span>${esc(it.source)}</span><span>${ago(when(it))}</span>${c ? `<span class="cdate">${T("checkedOn")} ${cd.getMonth()+1}/${cd.getDate()}</span>` : tags}
+      ${showOrig ? `<button type="button" class="toggle">${T("orig")}</button>` : ""}</div>
+    ${work}
+  </article>`;
+}
+function render(){
+  const all = Object.values(checks);
+  document.getElementById("nChecks").textContent = all.length ? " " + all.filter(c => c.status !== "완료").length : "";
+  document.getElementById("newsTools").hidden = state.view !== "news";
+  document.getElementById("checkTools").hidden = state.view !== "checks";
+  const el = document.getElementById("list");
+  if (state.view === "checks") {
+    let list = state.cstatus === "all" ? all : all.filter(c => c.status === state.cstatus);
+    const order = {"확인 필요":0,"진행 중":1,"완료":2};
+    list.sort((a,b) => (order[a.status]-order[b.status]) || (b.checked_at > a.checked_at ? 1 : -1));
+    el.innerHTML = list.length ? list.map(c => card(c.item, c)).join("")
+      : `<p class="empty">${all.length ? T("emptyStatus") : T("emptyChecks")}</p>`;
+    return;
+  }
+  const base = baseFiltered();
+  renderLegend(base);
+  document.getElementById("nNews").textContent = " " + base.length;
+  let list = state.topic === "all" ? base : base.filter(it => topicOf(it) === state.topic);
+  if (state.topic === "invest" && state.stage !== "all") list = list.filter(it => it.stage === state.stage);
+  if (state.sort === "score") list = [...list].sort((a,b) => b.score - a.score || when(b) - when(a));
+  else if (state.sort === "amt") list = [...list].sort((a,b) => (b.amount_m||0) - (a.amount_m||0) || when(b) - when(a));
+  else list = [...list].sort((a,b) => when(b) - when(a));
+  if (!items.length) { el.innerHTML = `<p class="empty">${T("emptyNone")}</p>`; return; }
+  if (!list.length) { el.innerHTML = `<p class="empty">${T("emptyFilter")}</p>`; return; }
+  const shown = list.slice(0, state.limit), rest = list.length - shown.length;
+  el.innerHTML = shown.map(it => card(it, null)).join("") +
+    (rest > 0 ? `<button type="button" class="more" id="more">${L() === "en" ? `Show more (${rest} left)` : `더 보기 (${rest}건 남음)`}</button>` : "");
+}
+function bindSeg(id, key, parse){
+  document.getElementById(id).addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    state[key] = parse(b.dataset.v); state.limit = PAGE;
+    [...e.currentTarget.children].forEach(x => x.setAttribute("aria-pressed", x === b));
+    render();
+  });
+}
+bindSeg("period","days",Number); bindSeg("zone","zone",String); bindSeg("views","view",String); bindSeg("cstatus","cstatus",String);
+document.getElementById("legend").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return;
+  state.topic = state.topic === b.dataset.topic ? "all" : b.dataset.topic; state.stage = "all"; state.limit = PAGE; render(); });
+document.getElementById("substages").addEventListener("click", e => { const b = e.target.closest(".chip"); if (!b) return; state.stage = b.dataset.stage; state.limit = PAGE; render(); });
+let qTimer;
+document.getElementById("q").addEventListener("input", e => { clearTimeout(qTimer); qTimer = setTimeout(() => { state.q = e.target.value; state.limit = PAGE; render(); }, 200); });
+document.getElementById("sort").addEventListener("change", e => { state.sort = e.target.value; state.limit = PAGE; render(); });
+const listEl = document.getElementById("list");
+listEl.addEventListener("click", e => {
+  if (e.target.id === "more") { state.limit += PAGE; const y = window.scrollY; render(); window.scrollTo(0, y); return; }
+  const chk = e.target.closest(".check"); if (chk) { toggleCheck(chk.dataset.id); return; }
+  const tog = e.target.closest(".toggle");
+  if (tog) { const o = tog.closest(".item").querySelector(".orig"); o.hidden = !o.hidden; tog.textContent = o.hidden ? T("orig") : T("origClose"); return; }
+  const a = e.target.closest("a.title"); if (a && hasApi()) { e.preventDefault(); window.pywebview.api.open(a.href); }
+});
+listEl.addEventListener("change", e => { const sel = e.target.closest("select.status"); if (!sel) return;
+  const c = checks[sel.dataset.id]; if (!c) return; c.status = sel.value; persist(sel.dataset.id); render(); });
+const memoTimers = {};
+listEl.addEventListener("input", e => { const ta = e.target.closest("textarea.memo"); if (!ta) return;
+  const id = ta.dataset.id, c = checks[id]; if (!c) return; c.memo = ta.value; clearTimeout(memoTimers[id]);
+  memoTimers[id] = setTimeout(() => persist(id).then(() => { const m = document.querySelector(`[data-saved="${id}"]`); if (m) { m.textContent = T("saved"); setTimeout(() => m.textContent = "", 1500); } }), 600); });
+document.getElementById("export").addEventListener("click", async () => {
+  if (hasApi()) { const r = await window.pywebview.api.export_checks();
+    alert(r && r.ok ? T("exported") + "\n" + r.path : T("exportFail") + ((r && r.msg) || "")); return; }
+  const head = ["체크일","상태","분야","단계","제목(한국어)","원문 제목","금액","지역","출처","메모","링크"];
+  const q = v => `"${String(v ?? "").replace(/"/g,'""')}"`;
+  const rows = Object.values(checks).map(c => { const it = c.item; return [c.checked_at.slice(0,10), c.status, it.topic_label, it.stage_label, it.title_ko||it.title_orig, it.title_orig, it.amount_label, (it.regions||[]).join(", "), it.source, c.memo, it.link].map(q).join(","); });
+  const blob = new Blob(["\ufeff" + [head.map(q).join(","), ...rows].join("\r\n")], {type:"text/csv"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "베트남_체크목록.csv"; a.click();
+});
+const WEB = !!window.RADAR_WEB;
+const btn = document.getElementById("refresh");
+if (WEB) {
+  btn.dataset.i18n = "reload"; btn.textContent = T("reload");
+  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+}
+window.radarBusy = (on, label) => { btn.disabled = on; btn.textContent = on ? (label || T("busy")) : T(WEB ? "reload" : "refresh"); };
+btn.addEventListener("click", async () => {
+  if (WEB || !hasApi()) { if (WEB) { location.reload(); return; } alert(T("browserMode")); return; }
+  window.radarBusy(true);
+  const r = await window.pywebview.api.refresh();
+  if (r && r.ok) location.reload(); else { window.radarBusy(false); alert((r && r.msg) || T("collectFail")); }
+});
+if (DATA && DATA.updated) { const d = new Date(DATA.updated);
+  const upd = () => document.getElementById("updated").textContent = `${T("updated")} ${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}` + (WEB ? ` · ${T("auto")}` : "");
+  upd(); document.getElementById("lang").addEventListener("click", () => setTimeout(upd)); }
+render();
+</script>
+</body>
+</html>

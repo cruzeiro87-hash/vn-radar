@@ -1,0 +1,197 @@
+{
+  "_설명": "분야별 검색어(topics)·관심기업을 자유롭게 추가/삭제하세요. 저장 후 위젯에서 '지금 수집'을 누르면 반영됩니다.",
+  "_분야": "invest=투자·공장, tariff=관세·통상, trade=수출입, logistics=물류·운송, law=법령·제도, consumer=소비·유통, industry=산업 동향",
+  "topics": {
+    "invest": {
+      "vi": [
+        "khởi công nhà máy",
+        "động thổ nhà máy",
+        "khánh thành nhà máy",
+        "cấp giấy chứng nhận đăng ký đầu tư nhà máy",
+        "dự án FDI nhà máy",
+        "khu công nghiệp thu hút đầu tư",
+        "mở rộng nhà máy",
+        "nhà đầu tư Hàn Quốc nhà máy"
+      ],
+      "en": [
+        "Vietnam factory groundbreaking",
+        "Vietnam new plant investment",
+        "Vietnam investment certificate factory",
+        "Vietnam industrial park FDI",
+        "Vietnam manufacturing expansion"
+      ],
+      "ko": [
+        "베트남 공장 착공",
+        "베트남 공장 증설",
+        "베트남 투자허가"
+      ]
+    },
+    "tariff": {
+      "vi": [
+        "thuế quan Việt Nam",
+        "thuế đối ứng Mỹ Việt Nam",
+        "phòng vệ thương mại chống bán phá giá",
+        "hiệp định thương mại tự do xuất khẩu",
+        "quy tắc xuất xứ hàng hóa"
+      ],
+      "en": [
+        "Vietnam tariff",
+        "Vietnam US trade agreement",
+        "Vietnam anti-dumping duty",
+        "Vietnam transshipment rules"
+      ],
+      "ko": [
+        "베트남 관세",
+        "베트남 통상"
+      ]
+    },
+    "trade": {
+      "vi": [
+        "kim ngạch xuất nhập khẩu",
+        "xuất khẩu tăng trưởng tháng",
+        "nhập khẩu nguyên liệu sản xuất"
+      ],
+      "en": [
+        "Vietnam exports",
+        "Vietnam trade surplus",
+        "Vietnam imports"
+      ],
+      "ko": [
+        "베트남 수출입"
+      ]
+    },
+    "logistics": {
+      "vi": [
+        "logistics Việt Nam",
+        "cảng biển container sản lượng",
+        "cước vận tải biển",
+        "vận tải hàng hóa đường sắt",
+        "vận chuyển hàng hóa hàng không",
+        "trung tâm logistics"
+      ],
+      "en": [
+        "Vietnam logistics",
+        "Vietnam port container throughput",
+        "Vietnam freight rates shipping",
+        "Cai Mep Thi Vai port",
+        "Vietnam air cargo"
+      ],
+      "ko": [
+        "베트남 물류",
+        "베트남 항만"
+      ]
+    },
+    "law": {
+      "vi": [
+        "nghị định hải quan mới",
+        "thủ tục hải quan",
+        "quy định mới xuất nhập khẩu",
+        "thông tư thuế mới",
+        "luật vận tải logistics"
+      ],
+      "en": [
+        "Vietnam customs regulation",
+        "Vietnam new decree import export",
+        "Vietnam tax law change"
+      ],
+      "ko": [
+        "베트남 통관 규정",
+        "베트남 법령 개정"
+      ]
+    },
+    "consumer": {
+      "vi": [
+        "thương mại điện tử Việt Nam",
+        "bán lẻ tiêu dùng",
+        "sức mua thị trường",
+        "giao hàng chặng cuối"
+      ],
+      "en": [
+        "Vietnam e-commerce",
+        "Vietnam retail market",
+        "Vietnam consumer trends"
+      ],
+      "ko": [
+        "베트남 소비 트렌드",
+        "베트남 이커머스"
+      ]
+    },
+    "industry": {
+      "vi": [
+        "chỉ số sản xuất công nghiệp",
+        "PMI Việt Nam",
+        "ngành dệt may xuất khẩu",
+        "ngành điện tử xuất khẩu",
+        "ngành gỗ nội thất xuất khẩu",
+        "ngành thủy sản xuất khẩu"
+      ],
+      "en": [
+        "Vietnam manufacturing PMI",
+        "Vietnam industry outlook",
+        "Vietnam textile industry",
+        "Vietnam electronics industry"
+      ],
+      "ko": [
+        "베트남 산업 동향",
+        "베트남 제조업"
+      ]
+    }
+  },
+  "extra_feeds": [
+    "https://e.vnexpress.net/rss/business.rss"
+  ],
+  "watch_keywords": [
+    "Samsung",
+    "LG",
+    "Foxconn",
+    "Luxshare",
+    "Hyosung",
+    "Goertek",
+    "삼성",
+    "효성"
+  ],
+  "exclude_keywords": [
+    "cổ phiếu",
+    "chứng khoán",
+    "căn hộ",
+    "stock price",
+    "shares",
+    "apartment",
+    "주가",
+    "bóng đá",
+    "showbiz",
+    "ca sĩ",
+    "hoa hậu",
+    "football",
+    "celebrity",
+    "연예",
+    "축구",
+    "VN-Index",
+    "VNIndex",
+    "chỉ số chứng khoán",
+    "thị trường chứng khoán",
+    "stock market",
+    "증시"
+  ],
+  "translator_order": [
+    "gtx",
+    "mymemory"
+  ],
+  "_번역설명": "클라우드에서는 Google 번역을 먼저 쓰고, 막히면 MyMemory를 씁니다. MyMemory 이메일은 GitHub Secrets(MYMEMORY_EMAIL)에 넣습니다.",
+  "translate_summary": false,
+  "news_window_days": 2,
+  "keep_days": 7,
+  "min_score": 3,
+  "max_per_query": 15,
+  "refresh_hours": 6,
+  "web": {
+    "translate_langs": [
+      "ko",
+      "en"
+    ],
+    "translator_order": [
+      "gtx",
+      "mymemory"
+    ]
+  }
+}
