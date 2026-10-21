@@ -72,6 +72,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 [hidden]{display:none!important}
 
 header{position:sticky;top:0;z-index:5;background:var(--head-bg);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);padding:calc(1rem + env(safe-area-inset-top, 0px)) 1rem .7rem;border-bottom:var(--bw) solid var(--line)}
+header{transition:transform .22s ease-out}
+header.away{transform:translateY(-100%)}
+@media (prefers-reduced-motion:reduce){header{transition:none}}
 .top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem}
 h1{margin:0;font-size:1.36rem;font-weight:750;letter-spacing:-.02em;line-height:1.25}
 [data-theme="cute"] h1{font-weight:400}
@@ -88,7 +91,14 @@ h1{margin:0;font-size:1.36rem;font-weight:750;letter-spacing:-.02em;line-height:
 
 .radar{display:flex;height:.55rem;border-radius:min(var(--r),4px);overflow:hidden;margin:.85rem 0 .3rem;background:var(--line)}
 .radar span{display:block;height:100%}
-.legend{display:flex;flex-wrap:wrap;gap:.3rem .4rem;margin-bottom:.4rem}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.35rem;margin-bottom:.45rem}
+.legend .chip{display:flex;flex-direction:column;align-items:flex-start;gap:.05rem;min-width:0;padding:.32rem .5rem .3rem;border-radius:min(var(--r),10px);text-align:left}
+.legend .chip .cl{display:flex;align-items:center;gap:.3rem;width:100%;min-width:0;font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.legend .chip .cl span{overflow:hidden;text-overflow:ellipsis}
+.legend .chip i{flex:none}
+.legend .chip b{font-size:1.07rem;line-height:1.2;padding-left:.85rem}
+.legend .chip[aria-pressed="true"] .cl{color:inherit;opacity:.85}
+[data-theme="cute"] .legend .chip,[data-theme="round"] .legend .chip{border-radius:14px}
 .chip{border:var(--bw) solid var(--line);background:var(--surface);border-radius:var(--r-chip);padding:.2rem .7rem .2rem .55rem;font-size:.89rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem}
 .chip i{width:.55rem;height:.55rem;border-radius:50%;display:inline-block}
 [data-theme="square"] .chip i,[data-theme="terminal"] .chip i{border-radius:0}
@@ -464,7 +474,7 @@ function renderLegend(base){
   const total = base.length || 1;
   document.getElementById("radar").innerHTML = TOPICS.map(([k]) => counts[k] ? `<span style="width:${counts[k]/total*100}%;background:var(--c-${k})"></span>` : "").join("");
   document.getElementById("legend").innerHTML = [["all",T("all"),base.length,"var(--ink)"], ...TOPICS.map(([k]) => [k,I18N[L()].topics[k],counts[k]||0,`var(--c-${k})`])]
-    .map(([k,l,n,c]) => `<button type="button" class="chip" data-topic="${k}" aria-pressed="${state.topic===k}"><i style="background:${c}"></i>${l} <b>${n}</b></button>`).join("");
+    .map(([k,l,n,c]) => `<button type="button" class="chip" data-topic="${k}" aria-pressed="${state.topic===k}" title="${esc(l)}"><span class="cl"><i style="background:${c}"></i><span>${l}</span></span><b>${n}</b></button>`).join("");
   const sub = document.getElementById("substages");
   sub.hidden = state.topic !== "invest";
   if (!sub.hidden) {
@@ -570,6 +580,19 @@ document.getElementById("export").addEventListener("click", async () => {
   const blob = new Blob(["\ufeff" + [head.map(q).join(","), ...rows].join("\r\n")], {type:"text/csv"});
   const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "베트남_체크목록.csv"; a.click();
 });
+/* 스크롤 내리면 메뉴 숨김, 올리면 다시 표시 */
+(() => {
+  const head = document.querySelector("header");
+  let lastY = window.scrollY, moved = 0;
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY, dy = y - lastY; lastY = y;
+    if (y < head.offsetHeight || !document.getElementById("settings").hidden) { head.classList.remove("away"); moved = 0; return; }
+    moved = (Math.sign(dy) === Math.sign(moved)) ? moved + dy : dy;
+    if (moved > 12) head.classList.add("away");
+    else if (moved < -8) head.classList.remove("away");
+  }, {passive: true});
+  head.addEventListener("focusin", () => head.classList.remove("away"));
+})();
 const WEB = !!window.RADAR_WEB;
 const btn = document.getElementById("refresh");
 if (WEB) {
